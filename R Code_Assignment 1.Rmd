@@ -1,0 +1,79 @@
+---
+title: "Reproducibility_1"
+author: "Omotayo Olaoye"
+date: "2024-09-20"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+```
+
+
+```{r message=FALSE, warning=FALSE}
+
+#Install all necessary packages 
+
+install.packages("readxl") #Necessary to read in the data from excel
+
+install.packages("dplyr") #Necessary to delete columns later on in the code
+
+#Load the library
+
+library(readxl)
+
+library(dplyr)
+
+```
+
+
+```{r}
+
+#Import the census dataset. If path has single backslashes, you may need to double them so R reads them. 
+
+data <- read_excel("C:\\Users\\Admin\\OneDrive\\CAnD3\\Reproducibility\\Reproducibility_1\\Census_mini.xlsx")
+
+```
+
+
+```{r}
+#View summary statistics
+
+summary(data)
+
+#R is treating all variables as continuous. However, I want it to treat all variables as factors except age. Hence, I will convert all 5 variables (except age) to factor variables and rename them in the same line of code. 
+
+data$Marital_status <- as.factor(data$MarStH)
+
+data$Sex_new <- as.factor(data$Sex)
+
+data$Highest_degree <- as.factor(data$HDGREE)
+
+data$Class_work <- as.factor(data$COW)
+
+data$Place_work <- as.factor(data$POWST)
+
+
+#Now, I will view summary statistics again 
+
+summary(data)
+
+print(names(data))
+
+#R does not treat them as continous variables anymore.
+
+#Finally, I will run a regression model with age as the outcome and marital status as the exposure and other variables as confounders included in the model. This is not an ideal research question. It is only being used for the purpose of this assignment. 
+
+#The model will be named 'Model'
+
+Model <- lm(AGEGRP ~ Marital_status + Sex_new + Highest_degree + Class_work + Place_work, data = data)
+
+print(Model)
+
+
+```
+
